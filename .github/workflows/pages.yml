@@ -1,8 +1,10 @@
-name: Deploy static site to GitHub Pages
+name: Refresh typhoon data and deploy Pages
 
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -15,7 +17,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  fetch-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -23,12 +25,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
+      - name: Fetch Zhejiang typhoon data
+        run: node scripts/fetch-typhoon.mjs
+
+      - name: Prepare static site
+        run: |
+          mkdir -p _site/data
+          cp index.html _site/index.html
+          cp data/typhoon.json _site/data/typhoon.json
+          touch _site/.nojekyll
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
-      - name: Upload static site
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: .
+          path: _site
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
