@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "status": "waiting_for_first_fetch",
+  "fetchedAt": null,
+  "source": {
+    "name": "浙江省水利厅台风路径实时发布系统",
+    "homepage": "https://typhoon.slt.zj.gov.cn/",
+    "activityApi": "https://typhoon.slt.zj.gov.cn/Api/TyhoonActivity"
+  },
+  "notice": "本页转述公开台风路径数据，不替代气象主管部门发布的预警和防灾指令。",
+  "storms": [],
+  "errors": []
+}
